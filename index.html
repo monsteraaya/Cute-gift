@@ -3,294 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise Protocol | MONSTER</title>
+    <title>A Cute Gift For You 🎁💖 | MONSTER</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;800;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff2e63; /* Neon Pink */
-            --accent: #ffd700;  /* Gold */
-            --bg: #050505;      /* Deep Black */
-            --glass: rgba(255, 255, 255, 0.03);
-        }
-
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background: var(--bg); color: white;
-            font-family: 'Poppins', sans-serif;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-            touch-action: manipulation;
-        }
-
-        /* Moving Heart Background */
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.3; }
-
-        .screen {
-            position: fixed; inset: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10; padding: 20px;
-        }
-        .hidden { opacity: 0; pointer-events: none; transform: scale(1.1) translateY(30px); }
-
-        /* Premium Glass Box */
-        .glass-box {
-            background: var(--glass);
-            padding: 35px 25px; border-radius: 30px;
-            border: 1px solid rgba(255, 46, 99, 0.2);
-            backdrop-filter: blur(20px);
-            text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-            width: 100%; max-width: 320px;
-        }
-
-        h2 { font-size: 1.3rem; letter-spacing: 2px; color: var(--accent); margin-bottom: 5px; text-transform: uppercase; }
-
-        /* Keypad Styling */
-        .display {
-            background: #000; border-radius: 15px;
-            padding: 15px; margin-bottom: 25px;
-            font-size: 2.2rem; color: var(--primary);
-            letter-spacing: 8px; min-height: 45px;
-            border: 1px solid #1a1a1a;
-            box-shadow: inset 0 0 15px rgba(255, 46, 99, 0.2);
-        }
-        .keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .key {
-            padding: 18px; background: #111;
-            border-radius: 18px; cursor: pointer;
-            font-weight: bold; font-size: 1.2rem;
-            transition: 0.2s; border: 1px solid #222;
-        }
-        .key:active { transform: scale(0.9); background: var(--primary); color: #000; }
-
-        /* Surprise Section Styling */
-        .gift-icon { font-size: 90px; margin-bottom: 30px; animation: pulse 1s infinite alternate; filter: drop-shadow(0 0 20px var(--primary)); }
-        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
-
-        .neon-name {
-            font-size: 3.5rem; font-weight: 900; margin: 10px 0;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--primary), #fff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 3s linear infinite;
-            text-shadow: 0 0 25px rgba(255, 46, 99, 0.5);
-            word-wrap: break-word; text-align: center;
-        }
-        @keyframes shine { to { background-position: 200% auto; } }
-
-        .bday-text { font-size: 1rem; letter-spacing: 4px; color: var(--accent); font-weight: bold; margin-bottom: 40px; text-transform: uppercase; }
-
-        /* Secret Message Button */
-        .msg-btn {
-            background: none; border: 2px solid var(--primary); color: var(--primary);
-            padding: 12px 30px; border-radius: 50px; cursor: pointer;
-            font-weight: bold; font-size: 0.9rem; letter-spacing: 1px;
-            transition: 0.4s; position: relative; overflow: hidden;
-        }
-        .msg-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 30px var(--primary); }
-
-        /* Scrollable Message Modal */
-        .letter-modal {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            background: #fff; color: #000; padding: 30px; border-radius: 25px;
-            width: 85%; max-width: 300px;
-            max-height: 70vh; /* Limits height to fit screen */
-            z-index: 100; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column;
-            box-shadow: 0 0 100px rgba(255,46,99,0.5);
-        }
-        .letter-modal.open { transform: translate(-50%, -50%) scale(1); }
-        .letter-modal h3 { color: var(--primary); margin-top: 0; font-family: 'Poppins', sans-serif; text-align: center;}
+        :root { --p: #ff2e63; --a: #ffd700; --s: #00fff2; --b: #050505; }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--b); color: white; font-family: 'Poppins', sans-serif; overflow: hidden; touch-action: manipulation; }
         
-        .modal-scroll-content {
-            overflow-y: auto; /* Enables scrolling */
-            text-align: left;
-            font-family: 'Dancing Script', cursive; font-size: 1.3rem; line-height: 1.4;
-            padding-right: 5px; /* for scrollbar spacing */
-        }
-        /* Custom scrollbar */
-        .modal-scroll-content::-webkit-scrollbar { width: 5px; }
-        .modal-scroll-content::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+        /* Floating Layer for Neon Text */
+        #floating-layer { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+        .float-text { position: absolute; font-size: 8px; font-weight: bold; color: var(--p); text-shadow: 0 0 8px var(--p); opacity: 0.35; white-space: nowrap; animation: floatAnim 10s linear infinite; }
+        @keyframes floatAnim { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
 
-        /* Setup Screen Inputs */
-        input, textarea {
-            width: 100%; padding: 12px; margin: 10px 0;
-            border-radius: 12px; border: 1px solid #333;
-            background: #000; color: white; box-sizing: border-box;
-            font-family: inherit; font-size: 0.9rem;
-        }
-        textarea { height: 80px; resize: none; }
+        #bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.1; }
+        #flash-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; background: white; opacity: 0; transition: opacity 0.1s; }
 
-        /* Countdown Visual */
-        .countdown-visual { font-size: 8rem; font-weight: 900; color: #fff; text-shadow: 0 0 50px var(--primary); animation: countdownPop 0.8s infinite;}
-        @keyframes countdownPop { 0% { transform: scale(0.5); opacity: 0;} 50% {transform: scale(1.1); opacity: 1;} 100% {transform: scale(1); opacity: 1;}}
+        .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s ease-in-out; z-index: 10; padding: 15px; }
+        .hidden { display: none !important; opacity: 0; }
+        
+        .glass { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 35px; border: 1px solid rgba(255,46,99,0.2); backdrop-filter: blur(25px); text-align: center; width: 90%; max-width: 320px; box-shadow: 0 25px 50px rgba(0,0,0,1); }
+        .display { background: #000; border-radius: 15px; padding: 15px; margin-bottom: 20px; font-size: 2.2rem; color: var(--s); letter-spacing: 6px; min-height: 45px; border: 1px solid #222; }
+        .keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .key { padding: 18px; background: #111; border-radius: 18px; cursor: pointer; font-weight: 800; border: 1px solid #222; font-size: 1.2rem; }
+        .key:active { background: var(--s); color: #000; transform: scale(0.9); }
 
-        /* Watermark */
-        .watermark { position: fixed; bottom: 15px; right: 15px; color: var(--primary); font-size: 10px; font-weight: bold; opacity: 0.6; letter-spacing: 2px; z-index: 1000; }
+        .gift-box { font-size: 100px; cursor: pointer; animation: boxBounce 0.8s infinite alternate; filter: drop-shadow(0 0 20px var(--p)); z-index: 15; }
+        @keyframes boxBounce { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+        .count-text { font-size: 8rem; font-weight: 900; color: #fff; text-shadow: 0 0 40px var(--p); animation: zoomPulse 0.8s infinite; }
+        @keyframes zoomPulse { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1.2); opacity: 1; } }
+
+        /* Double Layer Reveal */
+        .jumping-container { display: flex; gap: 4px; margin-bottom: 5px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .jump-char { font-size: 1.9rem; font-weight: 900; color: #fff; text-transform: lowercase; text-shadow: 0 0 10px var(--p); animation: jump 0.6s infinite alternate; }
+        @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+
+        .btn-p { background: var(--p); color: #000; padding: 14px 32px; border-radius: 50px; cursor: pointer; font-weight: 900; border: none; margin-top: 25px; box-shadow: 0 10px 20px rgba(255,46,99,0.3); }
+        .balloon { position: absolute; bottom: -100px; animation: floatUp 5s ease-in forwards; font-size: 45px; z-index: 5; pointer-events: none; }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-120vh); opacity: 0; } }
+
+        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: #fff; color: #000; padding: 25px; border-radius: 30px; width: 85%; max-width: 310px; max-height: 60vh; z-index: 100; transition: 0.5s; display: flex; flex-direction: column; box-shadow: 0 0 100px rgba(255,46,99,0.5); }
+        .modal.open { transform: translate(-50%, -50%) scale(1); }
+        .scroll-area { overflow-y: auto; text-align: left; font-family: 'Dancing Script', cursive; font-size: 1.4rem; line-height: 1.4; padding: 10px; color: #222; }
+
+        input, textarea { width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        .watermark { position: fixed; bottom: 10px; right: 15px; color: var(--p); font-size: 9px; font-weight: bold; opacity: 0.4; letter-spacing: 2px; }
     </style>
 </head>
 <body onclick="tapCelebration(event)">
-
     <canvas id="bg-canvas"></canvas>
+    <div id="floating-layer"></div>
+    <div id="flash-layer"></div>
     <div class="watermark">DEV: MONSTER</div>
 
-    <div id="stage1" class="screen">
-        <div class="glass-box">
-            <h2>SURPRISE LOCK</h2>
-            <p style="font-size: 10px; opacity: 0.6; margin-bottom: 20px;">ENTER BIRTH YEAR (2000-2025)</p>
+    <audio id="bdayAudio" loop>
+        <source src="https://actions.google.com/sounds/v1/foley/party_horn_long.ogg" type="audio/ogg">
+    </audio>
+
+    <div id="gen-screen" class="screen hidden">
+        <div class="glass">
+            <h2 style="color:var(--a); margin:0;">GIFT CREATOR</h2>
+            <input type="text" id="nameInp" placeholder="Friend Name">
+            <input type="text" id="fromInp" placeholder="Your Name">
+            <textarea id="msgInp" placeholder="Secret Birthday Message..."></textarea>
+            <button class="btn-p" onclick="createMagicLink()" style="width:100%;">GENERATE MAGIC LINK</button>
+        </div>
+    </div>
+
+    <div id="stage1" class="screen hidden">
+        <div class="glass">
+            <h2 style="color:var(--a); margin:0;">UNLOCK MAGIC</h2>
+            <p style="font-size: 10px; opacity: 0.6; margin-bottom: 15px;">YEAR (2000-2025)</p>
             <div id="display" class="display"></div>
             <div class="keys">
-                <script>
-                    for(let i=1; i<=9; i++) document.write(`<div class="key" onclick="press(${i})">${i}</div>`);
-                </script>
-                <div class="key" style="background:#222; color:#888;" onclick="clr()">C</div>
+                <script>for(let i=1; i<=9; i++) document.write(`<div class="key" onclick="press(${i})">${i}</div>`);</script>
+                <div class="key" style="color:var(--p)" onclick="backspace()">⌫</div>
                 <div class="key" onclick="press(0)">0</div>
-                <div class="key" style="background:var(--primary); color:black;" onclick="verify()">OK</div>
+                <div class="key" style="background:var(--s); color:#000" onclick="verify()">OK</div>
             </div>
         </div>
     </div>
 
     <div id="stage-box" class="screen hidden">
-        <div class="gift-icon" onclick="startCountdownSequence()">🎁</div>
-        <p style="margin-top:20px; color:var(--accent); font-weight:bold; letter-spacing:2px;">TAP TO UNLOCK GIFT</p>
+        <div class="gift-box" onclick="startCelebrationSequence()">🎁</div>
+        <p style="margin-top:20px; color:var(--s); font-weight:bold; letter-spacing:2px;">TAP TO OPEN GIFT</p>
     </div>
 
-    <div id="stage-countdown" class="screen hidden">
-        <div id="countdown-visual" class="countdown-visual">3</div>
+    <div id="stage-count" class="screen hidden">
+        <div id="countNumber" class="count-text">3</div>
     </div>
 
     <div id="stage-reveal" class="screen hidden">
-        <div style="font-size: 80px;">🎁</div>
-        <p class="bday-text">HAPPY BIRTHDAY!</p>
-        <h1 id="targetName" class="neon-name"></h1>
-        
-        <button class="msg-btn" onclick="toggleLetter()">VIEW MY MESSAGE ✉️</button>
-        
-        <div id="letter" class="letter-modal">
-            <h3>Special Note 💌</h3>
-            <div class="modal-scroll-content">
-                <p id="personalMsg"></p>
-            </div>
-            <button onclick="toggleLetter()" style="margin-top:20px; background:#f5f5f5; border:none; padding:10px; border-radius:10px; width:100%; cursor:pointer; font-weight:bold;">Close</button>
-        </div>
-    </div>
-
-    <div id="setup" class="screen hidden">
-        <div class="glass-box">
-            <h2 style="color:white; margin-bottom:15px;">Setup Surprise</h2>
-            <input type="text" id="nameInp" placeholder="Friend's Name" spellcheck="false">
-            <textarea id="msgInp" placeholder="Type long message here... (scrolling is enabled)" spellcheck="false"></textarea>
-            <button onclick="genLink()" style="width:100%; background:var(--primary); color:black; padding:15px; border:none; border-radius:12px; font-weight:bold; cursor:pointer; margin-top:10px;">Copy Magic Link</button>
+        <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+        <div class="jumping-container" id="bdayText"></div>
+        <div class="jumping-container" id="jumpingName" style="margin-top:10px;"></div>
+        <p id="fromTag" style="color:var(--s); letter-spacing:3px; font-size:0.8rem; margin-top:5px; text-transform:lowercase; font-weight:bold;"></p>
+        <button class="btn-p" onclick="toggleMsg()">READ SECRET NOTE ✉️</button>
+        <div id="msgModal" class="modal">
+            <h3 style="color:var(--p); text-align:center; margin:0 0 10px 0;">Special Note 💖</h3>
+            <div class="scroll-area"><p id="finalMsg"></p></div>
+            <button onclick="toggleMsg()" style="margin-top:15px; background:#f5f5f5; border:none; padding:12px; border-radius:15px; width:100%; font-weight:bold;">Close</button>
         </div>
     </div>
 
     <script>
-        // BACKGROUND ANIMATION
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let hearts = [];
-        class Heart {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 8 + 4;
-                this.speed = Math.random() * 1 + 0.5;
-            }
-            draw() {
-                ctx.fillStyle = "rgba(255, 46, 99, 0.3)";
-                ctx.font = `${this.size}px serif`;
-                ctx.fillText('❤️', this.x, this.y);
-            }
-            update() {
-                this.y -= this.speed;
-                if (this.y < -20) this.y = canvas.height + 20;
-            }
-        }
-        for(let i=0; i<40; i++) hearts.push(new Heart());
-        function animateBg() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            hearts.forEach(h => { h.update(); h.draw(); });
-            requestAnimationFrame(animateBg);
-        }
-        animateBg();
-
-        // LOGIC
         let input = "";
         const params = new URLSearchParams(window.location.search);
-        const u = params.get('u'), x = params.get('x');
+        const data = params.get('data'); 
+        let targetName = "friend", fromName = "", secretMsg = "";
 
         window.onload = () => {
-            if (!u) {
-                document.getElementById('stage1').classList.add('hidden');
-                document.getElementById('setup').classList.remove('hidden');
+            if (data) {
+                try {
+                    const decoded = JSON.parse(decodeURIComponent(escape(atob(data.split("").reverse().join("")))));
+                    targetName = decoded.u; fromName = decoded.f; secretMsg = decoded.x;
+                    initFloatingText();
+                    document.getElementById('stage1').classList.remove('hidden');
+                } catch(e) { document.getElementById('gen-screen').classList.remove('hidden'); }
+            } else {
+                document.getElementById('gen-screen').classList.remove('hidden');
             }
         };
 
-        function press(n) { if(input.length < 4) { input += n; document.getElementById('display').innerText = input; } }
-        function clr() { input = ""; document.getElementById('display').innerText = ""; }
+        function initFloatingText() {
+            const layer = document.getElementById('floating-layer');
+            const texts = ["happy b'day", targetName.toLowerCase()];
+            for(let i=0; i<25; i++) {
+                const span = document.createElement('div');
+                span.className = 'float-text';
+                span.innerText = texts[Math.floor(Math.random()*texts.length)];
+                span.style.left = Math.random() * 100 + "vw";
+                span.style.animationDelay = Math.random() * 10 + "s";
+                layer.appendChild(span);
+            }
+        }
+
+        function press(n) { if(input.length < 4) { input += n; updateDisplay(); } }
+        function backspace() { input = input.slice(0, -1); updateDisplay(); }
+        function updateDisplay() { document.getElementById('display').innerText = input; }
 
         function verify() {
-            const year = parseInt(input);
-            if (year >= 2000 && year <= 2025) unlockMysteryBox();
-            else { alert("Incorrect! Try birth year (2000-2025)"); clr(); }
+            if (parseInt(input) >= 2000 && parseInt(input) <= 2025) {
+                document.getElementById('stage1').classList.add('hidden');
+                document.getElementById('stage-box').classList.remove('hidden');
+            } else { alert("Use year 2000-2025"); input = ""; updateDisplay(); }
         }
 
-        function unlockMysteryBox() {
-            document.getElementById('stage1').classList.add('hidden');
-            document.getElementById('stage-box').classList.remove('hidden');
-        }
-
-        function startCountdownSequence() {
+        function startCelebrationSequence() {
+            document.getElementById('bdayAudio').play().catch(() => {});
             document.getElementById('stage-box').classList.add('hidden');
-            document.getElementById('stage-countdown').classList.remove('hidden');
+            document.getElementById('stage-count').classList.remove('hidden');
             let timer = 3;
             const interval = setInterval(() => {
                 timer--;
-                if(timer > 0) document.getElementById('countdown-visual').innerText = timer;
+                if(timer > 0) { document.getElementById('countNumber').innerText = timer; fireFlash(0.15); }
                 else { clearInterval(interval); revealFinal(); }
             }, 1000);
         }
 
-        function revealFinal() {
-            document.getElementById('stage-countdown').classList.add('hidden');
-            document.getElementById('stage-reveal').classList.remove('hidden');
-            document.getElementById('targetName').innerText = decodeURIComponent(u);
-            
-            if(x) {
-                // Secure Decoding
-                const decoded = atob(x.split("").reverse().join(""));
-                document.getElementById('personalMsg').innerText = decodeURIComponent(escape(decoded));
-            }
-
-            confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 }, colors: ['#ff2e63', '#ffd700', '#ffffff'] });
-            setInterval(() => {
-                confetti({ particleCount: 40, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff2e63'] });
-                confetti({ particleCount: 40, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ffd700'] });
-            }, 3000);
+        function fireFlash(op) {
+            const f = document.getElementById('flash-layer');
+            f.style.opacity = op;
+            setTimeout(() => f.style.opacity = "0", 100);
         }
 
-        function toggleLetter() { document.getElementById('letter').classList.toggle('open'); }
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 0.85; utterance.pitch = 1.1;
+            window.speechSynthesis.speak(utterance);
+        }
 
+        function revealFinal() {
+            document.getElementById('stage-count').classList.add('hidden');
+            document.getElementById('stage-reveal').classList.remove('hidden');
+            speak("Happy Birthday " + targetName);
+
+            const bCont = document.getElementById('bdayText');
+            "happy birthday".split("").forEach((c, i) => {
+                const s = document.createElement('span'); s.innerText = c === " " ? "\u00A0" : c;
+                s.className = "jump-char"; s.style.animationDelay = (i * 0.08) + "s";
+                bCont.appendChild(s);
+            });
+
+            const nCont = document.getElementById('jumpingName');
+            targetName.toLowerCase().split("").forEach((c, i) => {
+                const s = document.createElement('span'); s.innerText = c === " " ? "\u00A0" : c;
+                s.className = "jump-char"; s.style.color = "var(--a)"; s.style.animationDelay = (i * 0.1) + "s";
+                nCont.appendChild(s);
+            });
+
+            if(fromName) document.getElementById('fromTag').innerText = "from: " + fromName.toLowerCase();
+            document.getElementById('finalMsg').innerText = secretMsg;
+            fireFlash(0.4); bigBlast(); spawnBalloons();
+        }
+
+        function bigBlast() {
+            confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+            let end = Date.now() + 3000;
+            (function f() {
+                confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0 } });
+                confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(f);
+            }());
+        }
+
+        function spawnBalloons() {
+            const em = ['🎈', '💖', '✨', '🎁'];
+            for(let i=0; i<25; i++) {
+                setTimeout(() => {
+                    const b = document.createElement('div'); b.className = 'balloon';
+                    b.innerText = em[Math.floor(Math.random()*em.length)];
+                    b.style.left = Math.random() * 100 + "vw";
+                    document.body.appendChild(b);
+                    setTimeout(() => b.remove(), 5000);
+                }, i * 180);
+            }
+        }
+
+        function toggleMsg() { document.getElementById('msgModal').classList.toggle('open'); }
         function tapCelebration(e) {
             if(document.getElementById('stage-reveal').classList.contains('hidden')) return;
-            confetti({ particleCount: 15, startVelocity: 30, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
+            confetti({ particleCount: 20, startVelocity: 30, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
         }
 
-        function genLink() {
-            const name = document.getElementById('nameInp').value;
-            const msg = document.getElementById('msgInp').value;
-            if(!name || !msg) return alert("Pehle naam aur message dalo!");
-            // Ultra Masking: Encode + Reverse
-            const secret = btoa(unescape(encodeURIComponent(msg))).split("").reverse().join("");
-            const link = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(name)}&x=${secret}`;
-            navigator.clipboard.writeText(link).then(() => {
-                alert("✅ MAGIC LINK COPIED!\nPasscode: Their Birth Year (2000-2025)");
-                window.location.href = link;
-            });
+        function createMagicLink() {
+            const n = document.getElementById('nameInp').value, fr = document.getElementById('fromInp').value, m = document.getElementById('msgInp').value;
+            if(!n || !m || !fr) return alert("Fill all details!");
+            const package = JSON.stringify({u:n, f:fr, x:m});
+            const secret = btoa(unescape(encodeURIComponent(package))).split("").reverse().join("");
+            const link = `${window.location.origin}${window.location.pathname}?data=${secret}`;
+            navigator.clipboard.writeText(link).then(() => { alert("✅ MAGIC LINK COPIED!"); window.location.href = link; });
         }
+
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let hearts = [];
+        for(let i=0; i<20; i++) hearts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*0.4+0.2, sz: Math.random()*15+5});
+        function anim() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "rgba(255, 46, 99, 0.1)";
+            hearts.forEach(h => {
+                ctx.font = h.sz+"px serif"; ctx.fillText('❤️', h.x, h.y);
+                h.y -= h.s; if(h.y < -20) h.y = canvas.height+20;
+            });
+            requestAnimationFrame(anim);
+        }
+        anim();
     </script>
 </body>
 </html>
