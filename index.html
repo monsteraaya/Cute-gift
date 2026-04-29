@@ -3,226 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surprise Protocol | MONSTER</title>
+    <title>For You | MONSTER</title>
     <style>
-        /* CSS SETTINGS */
+        /* CSS START */
         body {
             margin: 0; padding: 0;
-            background-color: #000;
-            color: #00ff41;
-            font-family: 'Courier New', Courier, monospace;
+            background: #0a0a0a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
+            height: 100vh; overflow: hidden; color: white;
         }
 
-        /* Matrix Background */
-        #matrix {
-            position: fixed; top: 0; left: 0;
-            z-index: -1; width: 100%; height: 100%;
-            opacity: 0.2;
+        /* Floating Hearts Layer */
+        .bg-hearts {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
         }
 
-        .container { text-align: center; width: 90%; max-width: 550px; z-index: 1; }
+        .container { text-align: center; z-index: 10; width: 90%; max-width: 450px; }
         .hidden { display: none !important; }
 
-        /* Premium Glass Look */
+        /* Step 1: Input Box Style */
         .glass-card {
-            background: rgba(0, 20, 0, 0.4);
-            padding: 40px; border-radius: 20px;
-            border: 1px solid #00ff41;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.4);
-            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 20px; border-radius: 25px;
+            backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
+        h1 { font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 20px; color: #ff2e63; }
+
         input {
-            width: 85%; padding: 15px; margin: 25px 0;
-            background: rgba(0,0,0,0.8); border: 1px solid #00ff41;
-            color: #00ff41; border-radius: 8px; outline: none; 
-            text-align: center; font-size: 1.1rem;
+            width: 85%; padding: 15px; margin: 20px 0;
+            border-radius: 50px; border: 1px solid #ff2e63; outline: none;
+            text-align: center; font-size: 1.1rem; background: transparent; color: white;
         }
 
         button {
-            background: #00ff41; color: #000;
-            padding: 15px 35px; border: none; border-radius: 8px;
-            font-weight: bold; cursor: pointer; transition: 0.4s;
-            font-size: 1rem; text-transform: uppercase;
+            background: #ff2e63; color: white;
+            padding: 12px 35px; border: none; border-radius: 50px;
+            font-weight: bold; cursor: pointer; font-size: 1rem;
+            transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 46, 99, 0.4);
         }
 
-        button:hover { box-shadow: 0 0 25px #00ff41; transform: translateY(-3px); }
+        button:hover { transform: scale(1.05); background: #ff4d7d; }
 
-        /* Terminal Window */
-        .terminal {
-            background: rgba(10, 10, 10, 0.95);
-            border-radius: 12px; text-align: left;
-            overflow: hidden; margin-bottom: 25px;
-            border: 1px solid #00ff41; box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+        /* Step 2: Surprise Visuals (The Heart) */
+        .heart-main {
+            position: relative; width: 100px; height: 90px;
+            background-color: #ff2e63; margin: 0 auto 50px;
+            transform: rotate(-45deg);
+            animation: pulse 0.7s infinite alternate;
+            box-shadow: 0 0 50px rgba(255, 46, 99, 0.8);
         }
 
-        .terminal-header { 
-            background: #222; padding: 12px; 
-            display: flex; align-items: center; 
-            border-bottom: 1px solid #333;
-        }
-        
-        .dot { height: 12px; width: 12px; border-radius: 50%; margin-right: 8px; }
-        .red { background: #ff5f56; } 
-        .yellow { background: #ffbd2e; } 
-        .green { background: #27c93f; }
-        .file-name { margin-left: 10px; font-size: 13px; color: #888; font-weight: bold; }
-
-        .code-body { padding: 25px; font-size: 1rem; line-height: 1.7; min-height: 200px; }
-        #typewriter { white-space: pre-wrap; color: #00ff41; }
-
-        /* Name Animation */
-        .glow-text {
-            font-size: 3.2rem; text-shadow: 0 0 25px #00ff41;
-            margin-top: 25px; animation: heartbeat 1.5s infinite;
+        .heart-main::before, .heart-main::after {
+            content: ''; position: absolute; width: 100px; height: 100px;
+            background-color: #ff2e63; border-radius: 50%;
         }
 
-        @keyframes heartbeat {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.08); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
+        .heart-main::before { top: -50px; left: 0; }
+        .heart-main::after { top: 0; left: 50px; }
+
+        @keyframes pulse {
+            to { transform: scale(1.3) rotate(-45deg); }
         }
 
-        /* Branding */
-        .user-watermark {
+        .special-name {
+            font-size: 3.5rem; font-weight: bold;
+            margin-top: 60px; text-shadow: 0 0 25px #ff2e63;
+            letter-spacing: 3px;
+        }
+
+        .message { font-size: 1.3rem; opacity: 0.9; margin-top: 15px; font-style: italic; }
+
+        /* Branding Watermark */
+        .watermark {
             position: fixed; bottom: 20px; right: 20px;
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(0, 255, 65, 0.15); padding: 8px 18px;
-            border-radius: 30px; border: 1px solid rgba(0, 255, 65, 0.5);
-            font-size: 0.85rem; font-weight: bold; color: #00ff41;
-            letter-spacing: 2px; box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
+            font-size: 0.75rem; letter-spacing: 3px; color: #ff2e63;
+            font-weight: bold; opacity: 0.7; z-index: 100;
+        }
+
+        /* Particle Logic */
+        .particle {
+            position: absolute; color: #ff2e63;
+            animation: float Up 5s linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="matrix"></canvas>
+    <div class="bg-hearts" id="bg-hearts"></div>
 
-    <div id="setup-container" class="container">
+    <div id="form-side" class="container">
         <div class="glass-card">
-            <h1 style="letter-spacing: 5px;">MONSTER'S CORE</h1>
-            <p style="color: #888;">Initialize personalized surprise protocol.</p>
-            <input type="text" id="nameInput" placeholder="Enter Target Name..." spellcheck="false">
+            <h1>CREATE GIFT</h1>
+            <input type="text" id="nameInput" placeholder="Enter Their Name..." spellcheck="false">
             <br>
-            <button onclick="generateAndCopy()">Generate Link</button>
+            <button onclick="makeLink()">Generate & Copy Link</button>
         </div>
     </div>
 
-    <div id="main-container" class="container hidden">
-        <div class="terminal">
-            <div class="terminal-header">
-                <span class="dot red"></span>
-                <span class="dot yellow"></span>
-                <span class="dot green"></span>
-                <span class="file-name">heart_logic.py</span>
-            </div>
-            <div class="code-body">
-                <pre id="typewriter"></pre>
-            </div>
-        </div>
-        <h1 id="specialName" class="glow-text"></h1>
+    <div id="surprise-side" class="container hidden">
+        <div class="heart-main"></div>
+        <h1 class="special-name" id="targetName"></h1>
+        <p class="message">You are the most amazing person! ❤️</p>
     </div>
 
-    <div class="user-watermark">
-        <span>DEV: MONSTER</span>
-    </div>
-
-    <audio id="typeSound" src="https://www.soundjay.com/communication/typewriter-key-1.mp3"></audio>
+    <div class="watermark">DEV: MONSTER</div>
 
     <script>
-        /* 1. MATRIX ANIMATION LOGIC */
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        /* JAVASCRIPT START */
 
-        const chars = "010101ABCDEFHIJKLMNOPQRSTUVWXYZ❤️$#@%";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
-
-        function drawMatrix() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px monospace";
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = chars.charAt(Math.floor(Math.random() * chars.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
+        // 1. Particle Background Logic
+        function createHeart() {
+            const container = document.getElementById('bg-hearts');
+            const heart = document.createElement('div');
+            heart.innerHTML = "❤️";
+            heart.className = "particle";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            heart.style.opacity = Math.random();
+            container.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 4000);
         }
-        setInterval(drawMatrix, 35);
+        setInterval(createHeart, 250);
 
-        /* 2. CORE SURPRISE LOGIC */
-        const textToType = `import time
-
-def initiate_surprise():
-    print("Accessing secure database...")
-    time.sleep(1)
-    print("Target person detected.")
-    
-    status = "VERIFIED"
-    if status == "VERIFIED":
-        return "You are the most special person! ❤️"
-
-# Execution started...
-print(initiate_surprise())`;
-
+        // 2. Link & Display Logic
         window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const name = urlParams.get('user'); // Changed param to 'user'
-
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('gift'); // URL Param
             if (name) {
-                startSurprise(decodeURIComponent(name));
+                showVisual(decodeURIComponent(name));
             }
         };
 
-        function generateAndCopy() {
+        function makeLink() {
             const name = document.getElementById('nameInput').value;
-            if (!name) return alert("Error: Target name required!");
+            if (!name) return alert("Pehle naam toh enter karein!");
 
-            const baseUrl = window.location.href.split('?')[0];
-            const finalUrl = `${baseUrl}?user=${encodeURIComponent(name)}`;
+            const base = window.location.href.split('?')[0];
+            const link = `${base}?gift=${encodeURIComponent(name)}`;
 
-            navigator.clipboard.writeText(finalUrl).then(() => {
-                alert("Protocol Ready! Link copied to clipboard.\nShare it with " + name);
-                window.location.href = finalUrl; 
+            // Copy to Clipboard
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Link Copy Ho Gayi!\nIse send kar dein: " + name);
+                window.location.href = link; // Preview
             });
         }
 
-        function startSurprise(name) {
-            document.getElementById('setup-container').classList.add('hidden');
-            document.getElementById('main-container').classList.remove('hidden');
-            document.getElementById('specialName').innerText = name;
-
-            let i = 0;
-            const speed = 50;
-            const audio = document.getElementById('typeSound');
-
-            function typeWriter() {
-                if (i < textToType.length) {
-                    document.getElementById("typewriter").innerHTML += textToType.charAt(i);
-                    // Play sound on each character
-                    audio.currentTime = 0;
-                    audio.play().catch(() => {}); 
-                    i++;
-                    setTimeout(typeWriter, speed);
-                }
-            }
-            // Start after a small delay for dramatic effect
-            setTimeout(typeWriter, 1200);
+        function showVisual(name) {
+            document.getElementById('form-side').classList.add('hidden');
+            document.getElementById('surprise-side').classList.remove('hidden');
+            document.getElementById('targetName').innerText = name;
         }
-
-        // Adjust canvas on resize
-        window.onresize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
     </script>
 </body>
 </html>
