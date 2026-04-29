@@ -39,7 +39,7 @@
             font-size: 2rem; font-weight: 900; color: #fff; 
             text-transform: lowercase; text-shadow: 0 0 12px var(--p); 
             animation: jump 0.6s infinite alternate; 
-            display: inline-block; /* MUST for jumping animation */
+            display: inline-block;
         }
         @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-12px); } }
 
@@ -120,12 +120,18 @@
         const encodedData = urlParams.get('data'); 
         let targetName = "Friend", fromName = "", secretMsg = "";
 
+        // URL-Safe Base64 Decode
+        function decodeURLSafeBase64(str) {
+            let b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+            while (b64.length % 4) { b64 += '='; }
+            return decodeURIComponent(escape(atob(b64)));
+        }
+
         // Safe Loading
         window.onload = () => {
             if (encodedData) {
                 try {
-                    // SECURE DECODING (Bulletproof)
-                    const decodedStr = decodeURIComponent(atob(encodedData));
+                    const decodedStr = decodeURLSafeBase64(encodedData);
                     const data = JSON.parse(decodedStr);
                     targetName = data.u || "Friend"; 
                     fromName = data.f || ""; 
@@ -144,7 +150,7 @@
 
         function initFloatingText() {
             const layer = document.getElementById('floating-layer');
-            layer.innerHTML = ""; // Clear existing
+            layer.innerHTML = ""; 
             const texts = ["happy b'day", targetName.toLowerCase()];
             for(let i=0; i<30; i++) {
                 const span = document.createElement('div');
@@ -152,7 +158,7 @@
                 span.innerText = texts[Math.floor(Math.random()*texts.length)];
                 span.style.left = Math.random() * 100 + "vw";
                 span.style.animationDelay = Math.random() * 10 + "s";
-                span.style.fontSize = (Math.random() * 5 + 8) + "px"; // Random sizes
+                span.style.fontSize = (Math.random() * 5 + 8) + "px"; 
                 layer.appendChild(span);
             }
         }
@@ -169,7 +175,7 @@
         }
 
         function speak(text) {
-            window.speechSynthesis.cancel(); // Clear old queues
+            window.speechSynthesis.cancel(); 
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.rate = 0.85; utterance.pitch = 1.1;
             window.speechSynthesis.speak(utterance);
@@ -257,41 +263,4 @@
         function toggleMsg() { document.getElementById('msgModal').classList.toggle('open'); }
         function tapCelebration(e) {
             if(document.getElementById('stage-reveal').classList.contains('hidden')) return;
-            confetti({ particleCount: 20, startVelocity: 30, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
-        }
-
-        function createMagicLink() {
-            const n = document.getElementById('nameInp').value.trim();
-            const fr = document.getElementById('fromInp').value.trim();
-            const m = document.getElementById('msgInp').value.trim();
-            if(!n || !m) return alert("Fill Name and Message!");
-            
-            // SECURE ENCODING (URL Safe)
-            const rawData = JSON.stringify({u:n, f:fr, x:m});
-            const secret = btoa(encodeURIComponent(rawData));
-            const finalLink = `${window.location.origin}${window.location.pathname}?data=${secret}`;
-            
-            navigator.clipboard.writeText(finalLink).then(() => { 
-                alert("✅ MAGIC LINK COPIED!\nAb ise share karo, details nahi mangega."); 
-                window.location.href = finalLink; 
-            });
-        }
-
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let hearts = [];
-        for(let i=0; i<25; i++) hearts.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*0.4+0.2, sz: Math.random()*15+5});
-        function anim() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle = "rgba(255, 46, 99, 0.15)";
-            hearts.forEach(h => {
-                ctx.font = h.sz+"px serif"; ctx.fillText('❤️', h.x, h.y);
-                h.y -= h.s; if(h.y < -20) h.y = canvas.height+20;
-            });
-            requestAnimationFrame(anim);
-        }
-        anim();
-    </script>
-</body>
-</html>
+            confetti({ particleCount: 20, startVelocity: 30, spread: 360, origin: { x: e.clientX/window
