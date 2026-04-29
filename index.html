@@ -12,14 +12,14 @@
         
         /* Floating Neon Text Layer */
         #floating-layer { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
-        .float-text { position: absolute; font-size: 8px; font-weight: bold; color: var(--p); text-shadow: 0 0 5px var(--p); opacity: 0.4; white-space: nowrap; animation: floatAnim 10s linear infinite; }
+        .float-text { position: absolute; font-size: 9px; font-weight: bold; color: var(--p); text-shadow: 0 0 8px var(--p); opacity: 0.3; white-space: nowrap; animation: floatAnim 12s linear infinite; }
         @keyframes floatAnim { from { transform: translateY(110vh) rotate(0deg); } to { transform: translateY(-10vh) rotate(360deg); } }
 
         #bg-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.1; }
         #flash-layer { position: fixed; inset: 0; z-index: 50; pointer-events: none; background: white; opacity: 0; transition: opacity 0.1s; }
 
         .screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s ease-in-out; z-index: 10; padding: 15px; }
-        .hidden { display: none !important; opacity: 0; }
+        .hidden { display: none !important; }
         
         .glass { background: rgba(255,255,255,0.02); padding: 30px; border-radius: 35px; border: 1px solid rgba(255,46,99,0.2); backdrop-filter: blur(20px); text-align: center; width: 90%; max-width: 320px; box-shadow: 0 25px 50px rgba(0,0,0,1); }
         .display { background: #000; border-radius: 15px; padding: 15px; margin-bottom: 20px; font-size: 2.2rem; color: var(--s); letter-spacing: 6px; min-height: 45px; border: 1px solid #222; }
@@ -33,12 +33,11 @@
         .count-text { font-size: 8rem; font-weight: 900; color: #fff; text-shadow: 0 0 40px var(--p); animation: zoomPulse 0.8s infinite; }
         @keyframes zoomPulse { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1.2); opacity: 1; } }
 
-        /* Two-Layer Jumping Text */
         .jumping-container { display: flex; gap: 4px; margin-bottom: 5px; flex-wrap: wrap; justify-content: center; width: 100%; }
-        .jump-char { font-size: 1.9rem; font-weight: 900; color: #fff; text-transform: lowercase; text-shadow: 0 0 10px var(--p); animation: jump 0.6s infinite alternate; }
+        .jump-char { font-size: 1.8rem; font-weight: 900; color: #fff; text-transform: lowercase; text-shadow: 0 0 10px var(--p); animation: jump 0.6s infinite alternate; }
         @keyframes jump { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
-        .btn-p { background: var(--p); color: #000; padding: 14px 32px; border-radius: 50px; cursor: pointer; font-weight: 900; border: none; margin-top: 25px; box-shadow: 0 10px 20px rgba(255,46,99,0.3); }
+        .btn-p { background: var(--p); color: #000; padding: 14px 32px; border-radius: 50px; cursor: pointer; font-weight: 900; border: none; margin-top: 25px; }
         .balloon { position: absolute; bottom: -100px; animation: floatUp 5s ease-in forwards; font-size: 45px; z-index: 5; pointer-events: none; }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-120vh); opacity: 0; } }
 
@@ -47,7 +46,7 @@
         .scroll-area { overflow-y: auto; font-family: 'Dancing Script', cursive; font-size: 1.4rem; line-height: 1.4; padding: 10px; color: #222; }
 
         input, textarea { width: 100%; padding: 14px; margin: 10px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
-        .watermark { position: fixed; bottom: 10px; right: 15px; color: var(--p); font-size: 9px; font-weight: bold; opacity: 0.4; }
+        .watermark { position: fixed; bottom: 10px; right: 15px; color: var(--p); font-size: 9px; font-weight: bold; opacity: 0.3; }
     </style>
 </head>
 <body onclick="tapCelebration(event)">
@@ -56,7 +55,7 @@
     <div id="flash-layer"></div>
     <div class="watermark">DEV: MONSTER</div>
 
-    <audio id="bdayAudio" loop>
+    <audio id="bdayAudio" loop preload="auto">
         <source src="https://actions.google.com/sounds/v1/foley/party_horn_long.ogg" type="audio/ogg">
     </audio>
 
@@ -73,7 +72,7 @@
     <div id="stage1" class="screen hidden">
         <div class="glass">
             <h2 style="color:var(--a); margin:0;">UNLOCK SURPRISE</h2>
-            <p style="font-size: 10px; opacity: 0.6; margin-bottom: 15px;">YEAR (2000-2025)</p>
+            <p style="font-size: 9px; opacity: 0.6; margin-bottom: 15px;">YEAR (2000-2025)</p>
             <div id="display" class="display"></div>
             <div class="keys">
                 <script>for(let i=1; i<=9; i++) document.write(`<div class="key" onclick="press(${i})">${i}</div>`);</script>
@@ -99,41 +98,51 @@
         <div class="jumping-container" id="jumpingName" style="margin-top:10px;"></div>
         <p id="fromTag" style="color:var(--s); letter-spacing:3px; font-size:0.8rem; margin-top:5px; text-transform:lowercase; font-weight:bold;"></p>
         <button class="btn-p" onclick="toggleMsg()">READ SECRET NOTE ✉️</button>
-        
         <div id="msgModal" class="modal">
             <h3 style="color:var(--p); text-align:center; margin:0 0 10px 0;">Special Note 💖</h3>
             <div class="scroll-area"><p id="finalMsg"></p></div>
-            <button onclick="toggleMsg()" style="margin-top:15px; background:#f5f5f5; border:none; padding:12px; border-radius:15px; width:100%; font-weight:bold; cursor:pointer;">Close</button>
+            <button onclick="toggleMsg()" style="margin-top:15px; background:#f5f5f5; border:none; padding:12px; border-radius:15px; width:100%; font-weight:bold;">Close</button>
         </div>
     </div>
 
     <script>
         let input = "";
-        const params = new URLSearchParams(window.location.search);
-        const data = params.get('data'); 
         let targetName = "friend", fromName = "", secretMsg = "";
 
+        // 1. Fixing URL Parsing for GitHub Sharing
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedData = urlParams.get('data');
+
         window.onload = () => {
-            if (data) {
+            if (encodedData) {
                 try {
-                    const decoded = JSON.parse(decodeURIComponent(escape(atob(data.split("").reverse().join("")))));
-                    targetName = decoded.u; fromName = decoded.f; secretMsg = decoded.x;
+                    // Safe decoding
+                    const decodedStr = decodeURIComponent(escape(atob(encodedData.split("").reverse().join(""))));
+                    const data = JSON.parse(decodedStr);
+                    targetName = data.u || "Friend";
+                    fromName = data.f || "";
+                    secretMsg = data.x || "";
+                    
                     initFloatingText();
                     document.getElementById('stage1').classList.remove('hidden');
-                } catch(e) { document.getElementById('gen-screen').classList.remove('hidden'); }
-            } else { document.getElementById('gen-screen').classList.remove('hidden'); }
+                } catch(e) {
+                    console.error("Link Error", e);
+                    document.getElementById('gen-screen').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('gen-screen').classList.remove('hidden');
+            }
         };
 
         function initFloatingText() {
             const layer = document.getElementById('floating-layer');
             const texts = ["happy b'day", targetName.toLowerCase()];
-            for(let i=0; i<20; i++) {
+            for(let i=0; i<15; i++) {
                 const span = document.createElement('div');
                 span.className = 'float-text';
                 span.innerText = texts[Math.floor(Math.random()*texts.length)];
-                span.style.left = Math.random() * 100 + "vw";
+                span.style.left = Math.random() * 90 + "vw";
                 span.style.animationDelay = Math.random() * 10 + "s";
-                span.style.color = i % 2 === 0 ? "var(--p)" : "var(--s)";
                 layer.appendChild(span);
             }
         }
@@ -146,24 +155,34 @@
             if (parseInt(input) >= 2000 && parseInt(input) <= 2025) {
                 document.getElementById('stage1').classList.add('hidden');
                 document.getElementById('stage-box').classList.remove('hidden');
-            } else { alert("Use year 2000-2025"); input = ""; updateDisplay(); }
+            } else { alert("Correct year required (2000-2025)"); input = ""; updateDisplay(); }
         }
 
         function speak(text) {
+            window.speechSynthesis.cancel(); // Clear previous speech
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.85; utterance.pitch = 1.1;
+            utterance.rate = 0.9; utterance.pitch = 1.1;
             window.speechSynthesis.speak(utterance);
         }
 
         function startCelebrationSequence() {
-            document.getElementById('bdayAudio').play().catch(() => {});
+            // Unlocking Audio on User Tap
+            const audio = document.getElementById('bdayAudio');
+            audio.play().catch(e => console.log("Audio Blocked", e));
+            
             document.getElementById('stage-box').classList.add('hidden');
             document.getElementById('stage-count').classList.remove('hidden');
+            
             let timer = 3;
             const interval = setInterval(() => {
                 timer--;
-                if(timer > 0) { document.getElementById('countNumber').innerText = timer; fireFlash(0.15); }
-                else { clearInterval(interval); revealFinal(); }
+                if(timer > 0) {
+                    document.getElementById('countNumber').innerText = timer;
+                    fireFlash(0.15); 
+                } else {
+                    clearInterval(interval);
+                    revealFinal();
+                }
             }, 1000);
         }
 
@@ -176,6 +195,7 @@
         function revealFinal() {
             document.getElementById('stage-count').classList.add('hidden');
             document.getElementById('stage-reveal').classList.remove('hidden');
+            
             speak("Happy Birthday " + targetName);
 
             const bCont = document.getElementById('bdayText');
@@ -194,7 +214,10 @@
 
             if(fromName) document.getElementById('fromTag').innerText = "from: " + fromName.toLowerCase();
             document.getElementById('finalMsg').innerText = secretMsg;
-            fireFlash(0.4); bigBlast(); spawnBalloons();
+            
+            fireFlash(0.4); 
+            bigBlast();
+            spawnBalloons();
         }
 
         function bigBlast() {
@@ -223,17 +246,28 @@
         function toggleMsg() { document.getElementById('msgModal').classList.toggle('open'); }
         function tapCelebration(e) {
             if(document.getElementById('stage-reveal').classList.contains('hidden')) return;
-            confetti({ particleCount: 20, startVelocity: 30, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
+            confetti({ particleCount: 15, startVelocity: 25, spread: 360, origin: { x: e.clientX/window.innerWidth, y: e.clientY/window.innerHeight } });
         }
 
         function createMagicLink() {
-            const n = document.getElementById('nameInp').value, fr = document.getElementById('fromInp').value, m = document.getElementById('msgInp').value;
-            if(!n || !m || !fr) return alert("Fill all details!");
-            const secret = btoa(unescape(encodeURIComponent(JSON.stringify({u:n, f:fr, x:m})))).split("").reverse().join("");
-            const link = `${window.location.origin}${window.location.pathname}?data=${secret}`;
-            navigator.clipboard.writeText(link).then(() => { alert("✅ MAGIC LINK COPIED!"); window.location.href = link; });
+            const n = document.getElementById('nameInp').value;
+            const fr = document.getElementById('fromInp').value;
+            const m = document.getElementById('msgInp').value;
+            if(!n || !m) return alert("Please enter Friend Name and Message!");
+            
+            const rawData = JSON.stringify({u:n, f:fr, x:m});
+            const secret = btoa(unescape(encodeURIComponent(rawData))).split("").reverse().join("");
+            
+            // This ensures the link is built correctly for GitHub
+            const finalLink = `${window.location.origin}${window.location.pathname}?data=${secret}`;
+            
+            navigator.clipboard.writeText(finalLink).then(() => {
+                alert("✅ LINK COPIED! Now share this link with your friend.");
+                window.location.href = finalLink;
+            });
         }
 
+        // Background Animation
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
